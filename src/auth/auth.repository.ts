@@ -17,7 +17,7 @@ export class AuthRepository {
     });
   }
 
-  async save(data: User): Promise<User> {
+  async save(data: any): Promise<User> {
     return await this.authRepository.save(data);
   }
 }

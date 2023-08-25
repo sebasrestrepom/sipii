@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { ICreateNewUser } from './interfaces/create-new-user.interface';
 import { ILoginUser } from './interfaces/user-login.interface';
-import { AuthRepository } from './AuthRepository';
+import { AuthRepository } from './auth.repository';
 import { hash, compare } from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
