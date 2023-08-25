@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsString, IsNumber, IsEmail } from 'class-validator';
 
 export class NewUserDto {
   @IsNotEmpty()
@@ -11,11 +11,27 @@ export class NewUserDto {
 
   @IsNotEmpty()
   @IsString()
+  documentType: string;
+
+  @IsNotEmpty()
+  @IsString()
   document: number;
+
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  phoneNumber: number;
 
   @IsNotEmpty()
   @IsNumber()
   age: number;
+
+  @IsNotEmpty()
+  @IsString()
+  department: string;
 
   @IsNotEmpty()
   @IsString()

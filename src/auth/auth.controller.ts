@@ -2,7 +2,6 @@ import { Controller, Post, Body, HttpStatus } from '@nestjs/common';
 import { NewUserDto } from './dto/new-user.dto';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/user-login.dto';
-import { User } from '../entities/user';
 
 @Controller('auth')
 export class AuthController {
@@ -22,12 +21,12 @@ export class AuthController {
   @Post('/login')
   async login(
     @Body() request: LoginDto,
-  ): Promise<{ message: string; status: number; data: User }> {
-    const login = await this.authService.login(request);
+  ): Promise<{ message: string; status: number; data: object }> {
+    const token = await this.authService.login(request);
     return {
-      message: 'Your record was successfully created in the database.',
-      status: HttpStatus.CREATED,
-      data: login,
+      message: 'The login was successful',
+      status: HttpStatus.OK,
+      data: { token },
     };
   }
 }

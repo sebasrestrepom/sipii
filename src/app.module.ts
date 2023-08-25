@@ -5,6 +5,7 @@ import { AuthRepository } from './auth/AuthRepository';
 import { typeOrmConfig } from './config/typeorm/typeorm.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -13,6 +14,11 @@ import { User } from './entities/user';
       ...typeOrmConfig,
     }),
     TypeOrmModule.forFeature([User]),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '20h' },
+    }),
   ],
   controllers: [AuthController],
   providers: [AuthService, AuthRepository],

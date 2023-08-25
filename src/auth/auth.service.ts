@@ -3,10 +3,14 @@ import { ICreateNewUser } from './interfaces/create-new-user.interface';
 import { ILoginUser } from './interfaces/user-login.interface';
 import { AuthRepository } from './AuthRepository';
 import { hash, compare } from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-  constructor(private authRepository: AuthRepository) {}
+  constructor(
+    private authRepository: AuthRepository,
+    private jwtService: JwtService,
+  ) {}
 
   async newUser(data: ICreateNewUser): Promise<any> {
     const user = await this.authRepository.findOne(data.document);
@@ -23,6 +27,8 @@ export class AuthService {
     const checkPassword = await compare(request.password, user.password);
     if (!checkPassword) throw new HttpException('PASSWORD_INVALID', 403);
 
-    return user;
+    const token = this.jwtService.sign({ document: user.document });
+
+    return token;
   }
 }
