@@ -2,12 +2,15 @@ import { Controller, Post, Body, HttpStatus } from '@nestjs/common';
 import { NewUserDto } from './dto/new-user.dto';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/user-login.dto';
+import { ApiTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 
+@ApiTags('Auth Endpoints')
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('/register')
+  @ApiOperation({ summary: 'User registration' })
   async newUser(
     @Body() request: NewUserDto,
   ): Promise<{ message: string; status: number }> {
@@ -19,6 +22,7 @@ export class AuthController {
   }
 
   @Post('/login')
+  @ApiOperation({ summary: 'User login' })
   async login(
     @Body() request: LoginDto,
   ): Promise<{ message: string; status: number; data: object }> {
