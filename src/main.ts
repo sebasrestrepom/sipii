@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('SIPII API')
+    .setTitle('Sipii API')
     .setDescription('API for consumer credit')
     .setVersion('1.0')
     .build();
