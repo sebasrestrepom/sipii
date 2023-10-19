@@ -1,4 +1,4 @@
-import { NotFoundException, Injectable } from '@nestjs/common';
+import { NotFoundException, Injectable, Logger } from '@nestjs/common';
 import * as AWS from 'aws-sdk';
 
 import { IdentityValidation } from './interfaces/identity-validation.interface';
@@ -114,7 +114,7 @@ export class IdentityValidationService {
         compareFacesResult.FaceMatches[0].Similarity >= 90
       );
     } catch (error) {
-      console.error('Error comparing faces:', error);
+      Logger.error('Error comparing faces:', error);
       return false;
     }
   }

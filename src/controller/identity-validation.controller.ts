@@ -4,16 +4,27 @@ import {
   Body,
   UploadedFiles,
   UseInterceptors,
+  UseGuards,
+  Request,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
-import { ApiTags, ApiOperation, ApiConsumes } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiConsumes,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 
 import { IdentityValidationService } from '../service/identity-validation/identity-validation.service';
 
 import { IdentityValidationDto } from './dto/identity-validation.dto';
+import { JwtAuthGuard } from '../../src/auth/jwt-auth.guard';
 
+@ApiBearerAuth()
 @ApiTags('Identity Validation Endpoints')
+@UseGuards(JwtAuthGuard)
 @Controller('identity-validation')
 export class IdentityValidationController {
   constructor(private identityValidationService: IdentityValidationService) {}
@@ -34,7 +45,14 @@ export class IdentityValidationController {
       documentPhoto?: Express.Multer.File[];
       selfiePhoto?: Express.Multer.File[];
     },
+    @Request() req: any,
   ): Promise<string> {
+    if (+req.user.document !== +data.document) {
+      throw new UnauthorizedException(
+        'You are not allowed to access this data',
+      );
+    }
+
     data.documentPhoto = files.documentPhoto[0];
     data.selfiePhoto = files.selfiePhoto[0];
 

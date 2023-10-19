@@ -19,6 +19,9 @@ import { User } from './entities/user';
 import { CreditQuota } from './entities/credit-quota';
 import { Credit } from './entities/credit';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './auth/jwt.strategy';
+import { UserController } from './controller/user.controller';
+import { UserByDocumentService } from './service/user/user-by-document.service';
 
 @Module({
   imports: [
@@ -38,9 +41,11 @@ import { JwtModule } from '@nestjs/jwt';
     CreditQuotaController,
     CreditController,
     IdentityValidationController,
+    UserController,
   ],
   providers: [
     AuthService,
+    JwtStrategy,
     CreditQuotaCalculationService,
     CreditQuotaByDocumentService,
     CreditRequestService,
@@ -50,6 +55,7 @@ import { JwtModule } from '@nestjs/jwt';
     CreditQuotaRepository,
     UserRepository,
     CreditRepository,
+    UserByDocumentService,
   ],
   exports: [],
 })
