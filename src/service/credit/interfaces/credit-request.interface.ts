@@ -3,4 +3,5 @@ export interface RequestCredit {
   amount: number;
   totalAmount: number;
   paymentDate: string;
+  status: string;
 }

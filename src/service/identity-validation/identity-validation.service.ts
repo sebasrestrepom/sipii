@@ -20,10 +20,12 @@ export class IdentityValidationService {
 
   async execute(data: IdentityValidation): Promise<string> {
     const user = await this.findUser(data.document);
+
     const documentPhotoPath = await this.uploadImageToS3(
       data.documentPhoto,
       'document',
     );
+
     const selfiePhotoPath = await this.uploadImageToS3(
       data.selfiePhoto,
       'selfie',
@@ -43,12 +45,14 @@ export class IdentityValidationService {
 
     await this.userRepository.save(user);
 
+    Logger.log('Validation status:', isValidated);
+
     return `Validation status: ${!!isValidated}`;
   }
 
   private async findUser(document: number) {
     const user = await this.userRepository.findByDocument(document);
-    if (!user) {
+    if (!user || user === null) {
       throw new NotFoundException('User not found');
     }
     return user;
@@ -62,10 +66,10 @@ export class IdentityValidationService {
     data: IdentityValidation,
   ) {
     Object.assign(user, {
+      ...data,
       isValidated,
       documentPhoto: documentPhotoUrl,
       selfiePhoto: selfiePhotoUrl,
-      ...data,
     });
   }
 

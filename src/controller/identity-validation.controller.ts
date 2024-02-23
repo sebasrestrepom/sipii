@@ -47,14 +47,8 @@ export class IdentityValidationController {
     },
     @Request() req: any,
   ): Promise<string> {
-    if (+req.user.document !== +data.document) {
-      throw new UnauthorizedException(
-        'You are not allowed to access this data',
-      );
-    }
-
-    data.documentPhoto = files.documentPhoto[0];
-    data.selfiePhoto = files.selfiePhoto[0];
+    data.documentPhoto = files?.documentPhoto?.[0];
+    data.selfiePhoto = files?.selfiePhoto?.[0];
 
     return this.identityValidationService.execute(data);
   }

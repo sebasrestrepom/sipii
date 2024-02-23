@@ -11,11 +11,15 @@ export class UserRepository {
   ) {}
 
   async findByDocument(document: number): Promise<User> {
-    return this.userRepository.findOne({
-      where: {
-        document,
-      },
-    });
+    try {
+      return this.userRepository.findOne({
+        where: {
+          document,
+        },
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 
   async save(user: User): Promise<User> {

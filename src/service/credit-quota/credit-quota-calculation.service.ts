@@ -6,11 +6,13 @@ import { CreditQuotaRepository } from '../../repository/credit-quota.repository'
 import { UserRepository } from '../../repository/user.respository';
 
 import { CreditQuota } from '../../entities/credit-quota';
+import { CreditRepository } from '../../repository/credit.repository';
 
 @Injectable()
 export class CreditQuotaCalculationService {
   constructor(
     private readonly creditQuotaRepository: CreditQuotaRepository,
+    private readonly creditRepository: CreditRepository,
     private readonly userRepository: UserRepository,
   ) {}
 
@@ -23,20 +25,25 @@ export class CreditQuotaCalculationService {
 
     let creditQuota = await this.creditQuotaRepository.findByUserId(user.id);
 
-    if (creditQuota) {
-      return creditQuota;
-    }
+    const activeCreditsTotal =
+      await this.creditRepository.calculateActiveCreditsTotal(user.id);
 
     const initialAmount = 200000;
+    const amountUtilized = +activeCreditsTotal;
+    const amountAvailable = initialAmount - +amountUtilized;
 
-    const data = {
-      amountAssigned: initialAmount,
-      amountAvailable: initialAmount,
-      amountUtilized: 0,
-      userId: user.id,
-    };
-
-    creditQuota = plainToClass(CreditQuota, data);
+    if (!creditQuota) {
+      const data = {
+        amountAssigned: initialAmount,
+        amountAvailable,
+        amountUtilized,
+        userId: user.id,
+      };
+      creditQuota = plainToClass(CreditQuota, data);
+    } else {
+      creditQuota.amountUtilized = +amountUtilized;
+      creditQuota.amountAvailable = amountAvailable;
+    }
 
     return await this.creditQuotaRepository.save(creditQuota);
   }

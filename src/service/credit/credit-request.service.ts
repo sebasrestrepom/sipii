@@ -16,7 +16,7 @@ export class CreditRequestService {
     private readonly creditRepository: CreditRepository,
   ) {}
 
-  async execute(data: RequestCredit): Promise<string> {
+  async execute(data: RequestCredit): Promise<Credit> {
     const user = await this.userRepository.findByDocument(data.document);
 
     if (!user) {
@@ -41,10 +41,10 @@ export class CreditRequestService {
     credit.totalAmount = data.totalAmount;
     credit.decision = decision;
     credit.paymentDate = data.paymentDate;
-    credit.status = decision === 'Denied' ? 'Denied' : 'Active';
+    credit.status = data.status;
 
-    await this.creditRepository.save(credit);
+    const creditSaved = await this.creditRepository.save(credit);
 
-    return decision;
+    return creditSaved;
   }
 }

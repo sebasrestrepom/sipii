@@ -37,4 +37,13 @@ export class CreditRequestDTO {
   @IsNotEmpty()
   @IsString()
   paymentDate: string;
+
+  @ApiProperty({
+    type: 'string',
+    description: 'The status of the credit',
+    example: 'Pendiente',
+  })
+  @IsNotEmpty()
+  @IsString()
+  status: string;
 }

@@ -14,12 +14,12 @@ export class Credit {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  userId: number;
-
   @ManyToOne(() => User, (user) => user.credits)
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @Column({ name: 'user_id' })
+  userId: number;
 
   @Column()
   document: number;
@@ -33,7 +33,7 @@ export class Credit {
   @Column()
   decision: string;
 
-  @Column({ default: 'Active' })
+  @Column({ default: 'Pendiente' })
   status: string;
 
   @Column()
@@ -41,6 +41,18 @@ export class Credit {
 
   @Column({ default: 0 })
   daysInArrears: number;
+
+  @Column({ type: 'boolean', nullable: true })
+  disbursed: boolean;
+
+  @Column({ type: 'boolean', nullable: true })
+  acceptTerms: boolean;
+
+  @Column({ type: 'boolean', nullable: true })
+  signed: boolean;
+
+  @Column({ nullable: true })
+  verificationCode: number;
 
   @CreateDateColumn()
   createdAt: Date;
