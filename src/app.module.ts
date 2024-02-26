@@ -32,6 +32,11 @@ import { ConfirmateCreditService } from './service/credit/confirmate-credit.serv
 import { ScheduleModule } from '@nestjs/schedule';
 import { DeletePendingCreditsService } from './service/credit/delete-pending-credits.service';
 import { UnpaidCreditsAnalysisService } from './service/credit/unpaid-credits-analysis.service';
+import { MercadoPagoController } from './controller/payment.controller';
+import { MercadoPagoPreferenceService } from './service/mercado-pago/mercado-pago-preference.service';
+import { MercadoPagoHandleNotificationService } from './service/mercado-pago/mercado-pago-webhook.service';
+import { PaymentRepository } from './repository/payment.repository';
+import { PaymentEntity } from './entities/payments';
 
 @Module({
   imports: [
@@ -40,7 +45,7 @@ import { UnpaidCreditsAnalysisService } from './service/credit/unpaid-credits-an
       type: 'postgres',
       ...typeOrmConfig,
     }),
-    TypeOrmModule.forFeature([User, CreditQuota, Credit]),
+    TypeOrmModule.forFeature([User, CreditQuota, Credit, PaymentEntity]),
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SECRET,
@@ -66,6 +71,7 @@ import { UnpaidCreditsAnalysisService } from './service/credit/unpaid-credits-an
     IdentityValidationController,
     UserController,
     SmsMessagesController,
+    MercadoPagoController,
   ],
   providers: [
     AuthService,
@@ -88,6 +94,9 @@ import { UnpaidCreditsAnalysisService } from './service/credit/unpaid-credits-an
     DeletePendingCreditsService,
     UnpaidCreditsAnalysisService,
     MailerModule,
+    MercadoPagoPreferenceService,
+    MercadoPagoHandleNotificationService,
+    PaymentRepository,
   ],
   exports: [],
 })

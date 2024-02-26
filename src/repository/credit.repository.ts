@@ -63,6 +63,7 @@ export class CreditRepository {
       where: {
         id: creditId,
       },
+      relations: { user: true },
     });
   }
 
@@ -108,8 +109,14 @@ export class CreditRepository {
     const daysInArrears = differenceInCalendarDays(today, paymentDateObj);
 
     await this.creditRepository.update(id, {
-      status: 'En mora',
+      status: 'En Mora',
       daysInArrears,
+    });
+  }
+
+  async updateCreditStatus(id: number, status: string) {
+    await this.creditRepository.update(id, {
+      status,
     });
   }
 }
