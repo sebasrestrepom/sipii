@@ -117,4 +117,10 @@ export class User {
 
   @OneToMany(() => Credit, (credit) => credit.user)
   credits: Credit[];
+
+  @Column({ nullable: true })
+  resetPasswordToken: string;
+
+  @Column({ type: 'bigint', nullable: true })
+  expirationResetPasswordToken: number;
 }

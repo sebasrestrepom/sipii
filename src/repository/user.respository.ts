@@ -22,6 +22,30 @@ export class UserRepository {
     }
   }
 
+  async findByEmail(email: string): Promise<User> {
+    try {
+      return this.userRepository.findOne({
+        where: {
+          email,
+        },
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async findByRecoveryToken(token: string): Promise<User> {
+    try {
+      return this.userRepository.findOne({
+        where: {
+          resetPasswordToken: token,
+        },
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
   async save(user: User): Promise<User> {
     return this.userRepository.save(user);
   }

@@ -37,6 +37,9 @@ import { MercadoPagoPreferenceService } from './service/mercado-pago/mercado-pag
 import { MercadoPagoHandleNotificationService } from './service/mercado-pago/mercado-pago-webhook.service';
 import { PaymentRepository } from './repository/payment.repository';
 import { PaymentEntity } from './entities/payments';
+import { ForgotPasswordController } from './controller/forgot-password.controller';
+import { ForgotPasswordService } from './service/forgot-password/forgot-password.service';
+import { RecoverPasswordService } from './service/forgot-password/recover-password.service';
 
 @Module({
   imports: [
@@ -72,6 +75,7 @@ import { PaymentEntity } from './entities/payments';
     UserController,
     SmsMessagesController,
     MercadoPagoController,
+    ForgotPasswordController,
   ],
   providers: [
     AuthService,
@@ -97,6 +101,8 @@ import { PaymentEntity } from './entities/payments';
     MercadoPagoPreferenceService,
     MercadoPagoHandleNotificationService,
     PaymentRepository,
+    ForgotPasswordService,
+    RecoverPasswordService,
   ],
   exports: [],
 })
