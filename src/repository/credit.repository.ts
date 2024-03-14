@@ -46,11 +46,12 @@ export class CreditRepository {
       .select('SUM(credit.amount)', 'sum')
       .where('credit.userId = :userId', { userId })
       .andWhere(
-        '(credit.status = :activeStatus OR credit.status = :pendingStatus OR credit.status = :overdueStatus)',
+        '(credit.status = :activeStatus OR credit.status = :pendingStatus OR credit.status = :overdueStatus OR credit.status = :readyForDisburmentStatus)',
         {
           activeStatus: 'Activo',
           pendingStatus: 'Pendiente',
           overdueStatus: 'En Mora',
+          readyForDisburmentStatus: 'Listo para desembolso',
         },
       )
       .getRawOne();
